@@ -1,5 +1,7 @@
+import EmailThreadDisplay from "./components/EmailThreadDisplay";
+import fakeData from "./fake-data";
 function App() {
-  return <p className="text-3xl font-bold underline">Hello react</p>;
+  return <EmailThreadDisplay emailThreads={fakeData} />;
 }
 
 export default App;
