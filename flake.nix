@@ -49,6 +49,8 @@
           imports = [];
 
           packages = [pkgs.yarn pkgs.nodejs];
+
+          processes.vite.exec = "vite";
         };
       };
       flake = {
