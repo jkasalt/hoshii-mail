@@ -2,6 +2,7 @@ import type { EmailThread } from "./types/EmailThread";
 
 const fakeData: EmailThread[] = [
   {
+    id: 0,
     sender: "hello@example.com",
     subject: "hello",
     emails: [
@@ -33,6 +34,7 @@ const fakeData: EmailThread[] = [
     ],
   },
   {
+    id: 1,
     sender: "world@example.com",
     subject: "world",
     emails: [
@@ -64,6 +66,7 @@ const fakeData: EmailThread[] = [
     ],
   },
   {
+    id: 2,
     sender: "dolor@example.com",
     subject: "dolor",
     emails: [
@@ -95,6 +98,7 @@ const fakeData: EmailThread[] = [
     ],
   },
   {
+    id: 3,
     sender: "sit@example.com",
     subject: "sit",
     emails: [
