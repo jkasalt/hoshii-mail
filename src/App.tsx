@@ -23,7 +23,7 @@ function App() {
 
   const createUpdatedThread = (id: number) => {
     const body = replies[id] ?? "";
-    const timestamp = new Date().getTime();
+    const timestamp = new Date();
     const threadToUpdate = threads[id];
     const updatedEmails = [
       ...threadToUpdate.emails,
@@ -52,11 +52,12 @@ function App() {
       ...replies,
       [selectedReply]: "",
     });
+    setSelectedReply(null);
   };
 
   return (
-    <>
-      <h1>Hoshii Mail</h1>
+    <div className="bg-blue-50">
+      <h1 className="text-4xl">Hoshii Mail</h1>
       <EmailThreadDisplay
         emailThreads={threads}
         onSelectReply={(n) => setSelectedReply(n)}
@@ -70,7 +71,7 @@ function App() {
           onClickSend={handleSend}
         />
       )}
-    </>
+    </div>
   );
 }
 

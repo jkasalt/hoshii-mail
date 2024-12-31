@@ -12,7 +12,7 @@ export default function EmailThreadDisplay({
   onSelectReply,
 }: EmailThreadDisplayProps) {
   return (
-    <ul>
+    <ul className="">
       {emailThreads.map((t) => (
         <li key={t.id}>
           <SingleEmailThread onClickReply={() => onSelectReply(t.id)} {...t} />

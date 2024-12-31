@@ -5,7 +5,7 @@ import type { EmailThread } from "./types/EmailThread";
 function fakeEmail(me: string, you: string): Email {
   return {
     sender: Math.random() < 0.5 ? me : you,
-    timestamp: faker.date.recent().toTimeString(),
+    timestamp: faker.date.recent(),
     body: faker.lorem.lines(),
   };
 }

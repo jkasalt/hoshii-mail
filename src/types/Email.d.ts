@@ -1,5 +1,5 @@
 export type Email = {
   sender: string;
-  timestamp: string;
+  timestamp: Date;
   body: string;
 };

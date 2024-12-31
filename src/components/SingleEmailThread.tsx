@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { EmailThread } from "../types/EmailThread";
 import EmailDisplay from "./EmailDisplay";
 import useSet from "../hooks/UseSet";
+import ButtonWithDropDown from "./ButtonWithDropdown";
 
 type SingleEmailThreadProps = EmailThread & {
   onClickReply: () => void;
@@ -43,7 +44,7 @@ export default function SingleEmailThread({
   };
 
   return (
-    <div>
+    <div className="bg-sky-100">
       <div className="flex">
         <button type="button" onClick={() => setShowDetails(!showDetails)}>
           {sender} <br /> {subject}
@@ -54,6 +55,11 @@ export default function SingleEmailThread({
           clickedOptions={assignees}
           onClickOption={handleAssigneeChange}
         />
+        <button
+          className="px-2 bg-sky-300 rounded-full"
+          type="button"
+          onClick={onClickReply}
+        >
           Reply
         </button>
       </div>
