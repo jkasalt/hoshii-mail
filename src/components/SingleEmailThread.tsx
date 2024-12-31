@@ -30,6 +30,7 @@ export default function SingleEmailThread({
   const [showDetails, setShowDetails] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [assignees, addAssignee, rmAssignee] = useSet<string>([]);
+  const [assignInput, setAssignInput] = useState("");
   const [reply, setReply] = useState("");
   const username = useContext(UsernameContext);
 
@@ -38,10 +39,6 @@ export default function SingleEmailThread({
       (a, b) => Number(b.timestamp) - Number(a.timestamp),
     );
   }, [emails]);
-
-  // TODO base assign options list is the set of all emails across all threads
-  // TODO add input to search or add arbitrary assignee
-  const assignOptions = ["a", "b", "c"];
 
   const preview = () => {
     const maxPreviewLen = 70;
@@ -64,23 +61,41 @@ export default function SingleEmailThread({
   };
 
   return (
-    <div className="m-2 p-2 bg-sky-100 border-solid border-2 border-sky-500 rounded">
+    <div
+      onClick={() => setShowDetails(!showDetails)}
+      onKeyDown={() => setShowDetails(!showDetails)}
+      className="m-2 p-2 bg-sky-100 border-solid border-2 border-sky-500 rounded"
+    >
       <div className="flex">
         <button type="button" onClick={() => setShowDetails(!showDetails)}>
           <strong>{sender}</strong>: {subject}
         </button>
-        <ButtonWithDropDown
-          name="Assign"
-          allOptions={assignOptions}
-          clickedOptions={assignees}
-          onClickOption={handleAssigneeChange}
+        <input
+          className="ml-auto rounded-bl-lg rounded-tl-lg"
+          placeholder="Assign..."
+          value={assignInput}
+          onKeyDown={(event) => event.stopPropagation()}
+          onClick={(event) => event.stopPropagation()}
+          onChange={(event) => setAssignInput(event.target.value)}
         />
+        <button
+          className="px-2 bg-sky-300 rounded-br-lg rounded-tr-lg"
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            addAssignee(assignInput);
+            setAssignInput("");
+          }}
+        >
+          Assign
+        </button>
         <button
           className="px-2 bg-sky-300 rounded-full"
           type="button"
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             setShowDetails(true);
-            setShowReplyBox(true);
+            setShowReplyBox(!showReplyBox);
           }}
         >
           Reply
@@ -102,23 +117,40 @@ export default function SingleEmailThread({
           }}
         />
       )}
-      <button
-        className="text-left"
-        type="button"
-        onClick={() => setShowDetails(!showDetails)}
-      >
+      <div className="text-left">
         {showDetails ? (
-          <ul>
-            {sortedEmails.map((m) => (
-              <li key={m.timestamp.getTime()}>
-                <EmailDisplay {...m} />
-              </li>
-            ))}
-          </ul>
+          <>
+            {assignees.size > 0 && (
+              <>
+                <strong>Assigned:</strong>
+                {[...assignees].map((a) => (
+                  <div key={a} className="flex bg-slate-200">
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        rmAssignee(a);
+                      }}
+                    >
+                      X
+                    </button>
+                    <p className="p-2">{a}</p>
+                  </div>
+                ))}
+              </>
+            )}
+            <ul>
+              {sortedEmails.map((m) => (
+                <li key={m.timestamp.getTime()}>
+                  <EmailDisplay {...m} />
+                </li>
+              ))}
+            </ul>
+          </>
         ) : (
           preview()
         )}
-      </button>
+      </div>
     </div>
   );
 }

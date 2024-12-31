@@ -19,7 +19,10 @@ export default function ButtonWithDropDown({
       <button
         className="bg-sky-300 p-1 rounded-full"
         type="button"
-        onClick={() => setShow(!show)}
+        onClick={(event) => {
+          event.stopPropagation();
+          setShow(!show);
+        }}
       >
         {name}
       </button>

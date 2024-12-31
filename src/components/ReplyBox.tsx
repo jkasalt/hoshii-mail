@@ -32,7 +32,10 @@ export default function ReplyBox({
         <button
           className="ml-auto m-1 p-1 bg-red-600"
           type="button"
-          onClick={onClickClose}
+          onClick={(event) => {
+            event.stopPropagation();
+            onClickClose();
+          }}
         >
           X
         </button>
@@ -41,9 +44,17 @@ export default function ReplyBox({
         className="resize-none text-black min-h-80 flex-auto"
         ref={textAreaRef}
         value={value}
+        onKeyDown={(event) => event.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
         onChange={onChange}
       />
-      <button type="button" onClick={onClickSend}>
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onClickSend();
+        }}
+      >
         Send
       </button>
     </div>
