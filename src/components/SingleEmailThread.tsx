@@ -14,7 +14,6 @@ export default function SingleEmailThread({
   emails,
 }: SingleEmailThreadProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const [showAssign, setShowAssign] = useState(false);
   const [assignees, addAssignee, rmAssignee] = useSet<string>([]);
 
   const sortedEmails = useMemo(() => {
@@ -46,29 +45,15 @@ export default function SingleEmailThread({
   return (
     <div>
       <div className="flex">
-        <div>
-          {sender} -- {subject}
-        </div>
-        <div className="ml-auto p-2">
-          <button type="button" onClick={() => setShowAssign(!showAssign)}>
-            Assign
-          </button>
-          {showAssign && (
-            <div className="absolute">
-              {assignOptions.map((opt) => (
-                <label key={opt}>
-                  <input
-                    type="checkbox"
-                    checked={assignees.has(opt)}
-                    onChange={() => handleAssigneeChange(opt)}
-                  />
-                  {opt}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-        <button className="p-2" type="button" onClick={onClickReply}>
+        <button type="button" onClick={() => setShowDetails(!showDetails)}>
+          {sender} <br /> {subject}
+        </button>
+        <ButtonWithDropDown
+          name="Assign"
+          allOptions={assignOptions}
+          clickedOptions={assignees}
+          onClickOption={handleAssigneeChange}
+        />
           Reply
         </button>
       </div>
