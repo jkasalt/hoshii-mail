@@ -1,32 +1,43 @@
-import { ChangeEvent, useContext, useMemo, useReducer, useState } from "react";
+import {
+  type ChangeEvent,
+  type Dispatch,
+  useContext,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import type { EmailThread } from "../types/EmailThread";
 import EmailDisplay from "./EmailDisplay";
 import useSet from "../hooks/UseSet";
 import ButtonWithDropDown from "./ButtonWithDropdown";
 import ReplyBox from "./ReplyBox";
-import { EmailThreadsDispatchContext } from "../contexts/EmailThreadsContext";
-import { threadsReducer } from "../reducers/EmailThreadReducer";
+import {
+  type EmailThreadAction,
+  threadsReducer,
+} from "../reducers/EmailThreadReducer";
 import { UsernameContext } from "../contexts/UsernameContext";
 
-type SingleEmailThreadProps = EmailThread;
+type SingleEmailThreadProps = EmailThread & {
+  dispatch: Dispatch<EmailThreadAction>;
+};
 
 export default function SingleEmailThread({
   sender,
   subject,
   emails,
+  dispatch,
 }: SingleEmailThreadProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [assignees, addAssignee, rmAssignee] = useSet<string>([]);
   const [reply, setReply] = useState("");
-  const [emailss, dispatch] = useReducer(threadsReducer, emails);
   const username = useContext(UsernameContext);
 
   const sortedEmails = useMemo(() => {
-    return [...emailss].sort(
+    return [...emails].sort(
       (a, b) => Number(b.timestamp) - Number(a.timestamp),
     );
-  }, [emailss]);
+  }, [emails]);
 
   // TODO base assign options list is the set of all emails across all threads
   // TODO add input to search or add arbitrary assignee

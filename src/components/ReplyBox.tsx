@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import { useEffect, useRef, type ChangeEvent } from "react";
 
 type ReplyBoxProps = {
   toWhom: string;
@@ -15,6 +15,16 @@ export default function ReplyBox({
   onClickClose,
   onClickSend,
 }: ReplyBoxProps) {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textAreaRef.current) {
+      const len = textAreaRef.current.value.length;
+      textAreaRef.current.focus();
+      textAreaRef.current.setSelectionRange(len, len);
+    }
+  }, []);
+
   return (
     <div className="m-2 mx-12 bg-slate-800 text-slate-50 rounded-lg flex flex-col shadow-2xl">
       <div className="flex max-w">
@@ -28,7 +38,8 @@ export default function ReplyBox({
         </button>
       </div>
       <textarea
-        className="text-black min-h-80 flex-auto"
+        className="resize-none text-black min-h-80 flex-auto"
+        ref={textAreaRef}
         value={value}
         onChange={onChange}
       />
