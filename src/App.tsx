@@ -1,17 +1,17 @@
 import { type ChangeEvent, useState } from "react";
 import EmailThreadDisplay from "./components/EmailThreadDisplay";
 import fakeData from "./fake-data";
-
+import ReplyBox from "./components/ReplyBox";
 type Replies = { [key: number]: string };
 
 function App() {
   const [threads, setThreads] = useState(fakeData);
-  const [replies, setReplies] = useState<Replies>({});
   const [selectedReply, setSelectedReply] = useState<number | null>(null);
+  const [replies, setReplies] = useState<Replies>({});
 
   const username = "me@example.com";
 
-  const handleReplyChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleReplyBoxChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (selectedReply === null) {
       return;
     }
@@ -62,19 +62,13 @@ function App() {
         onSelectReply={(n) => setSelectedReply(n)}
       />
       {selectedReply !== null && (
-        <div className="fixed bottom-4 right-4">
-          <p>Replying to {threads[selectedReply].sender}</p>
-          <button type="button" onClick={() => setSelectedReply(null)}>
-            X
-          </button>
-          <textarea
-            value={replies[selectedReply] ?? ""}
-            onChange={handleReplyChange}
-          />
-          <button type="button" onClick={handleSend}>
-            Send
-          </button>
-        </div>
+        <ReplyBox
+          toWhom={threads[selectedReply].sender}
+          value={replies[selectedReply] ?? ""}
+          onChange={handleReplyBoxChange}
+          onClickClose={() => setSelectedReply(null)}
+          onClickSend={handleSend}
+        />
       )}
     </>
   );
