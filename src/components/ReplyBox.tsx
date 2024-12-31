@@ -1,7 +1,9 @@
+import type { ChangeEvent } from "react";
+
 type ReplyBoxProps = {
   toWhom: string;
   value: string;
-  onChange: () => void;
+  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   onClickClose: () => void;
   onClickSend: () => void;
 };
