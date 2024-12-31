@@ -16,12 +16,22 @@ export default function ReplyBox({
   onClickSend,
 }: ReplyBoxProps) {
   return (
-    <div className="fixed bottom-4 right-4">
-      <p>Replying to {toWhom}</p>
-      <button type="button" onClick={onClickClose}>
-        X
-      </button>
-      <textarea value={value} onChange={onChange} />
+    <div className="m-2 mx-12 bg-slate-800 text-slate-50 rounded-lg flex flex-col shadow-2xl">
+      <div className="flex max-w">
+        <p>Replying to {toWhom}</p>
+        <button
+          className="ml-auto m-1 p-1 bg-red-600"
+          type="button"
+          onClick={onClickClose}
+        >
+          X
+        </button>
+      </div>
+      <textarea
+        className="text-black min-h-80 flex-auto"
+        value={value}
+        onChange={onChange}
+      />
       <button type="button" onClick={onClickSend}>
         Send
       </button>
