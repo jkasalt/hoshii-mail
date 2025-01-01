@@ -44,7 +44,7 @@ export default function ReplyBox({
         className="resize-none text-black min-h-80 flex-auto"
         ref={textAreaRef}
         value={value}
-        onKeyDown={(event) => event.stopPropagation()}
+        onKeyUp={(event) => event.stopPropagation()}
         onClick={(event) => event.stopPropagation()}
         onChange={onChange}
       />
