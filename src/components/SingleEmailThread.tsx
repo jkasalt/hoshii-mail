@@ -3,18 +3,13 @@ import {
   type Dispatch,
   useContext,
   useMemo,
-  useReducer,
   useState,
 } from "react";
 import type { EmailThread } from "../types/EmailThread";
 import EmailDisplay from "./EmailDisplay";
 import useSet from "../hooks/UseSet";
-import ButtonWithDropDown from "./ButtonWithDropdown";
 import ReplyBox from "./ReplyBox";
-import {
-  type EmailThreadAction,
-  threadsReducer,
-} from "../reducers/EmailThreadReducer";
+import type { EmailThreadAction } from "../reducers/EmailThreadReducer";
 import { UsernameContext } from "../contexts/UsernameContext";
 import Assigned from "./Assigned";
 
@@ -49,7 +44,7 @@ export default function SingleEmailThread({
     return (
       <>
         {assignees.size > 0 && <strong>Preview:</strong>}
-        <p>{truncated}</p>
+        <p className="p-2">{truncated}</p>
       </>
     );
   };
