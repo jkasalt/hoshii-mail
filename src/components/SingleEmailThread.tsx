@@ -16,6 +16,7 @@ import {
   threadsReducer,
 } from "../reducers/EmailThreadReducer";
 import { UsernameContext } from "../contexts/UsernameContext";
+import Assigned from "./Assigned";
 
 type SingleEmailThreadProps = EmailThread & {
   dispatch: Dispatch<EmailThreadAction>;
@@ -45,15 +46,12 @@ export default function SingleEmailThread({
     const body = sortedEmails[0]?.body ?? "";
     const truncated =
       body.length > maxPreviewLen ? `${body.slice(0, maxPreviewLen)}...` : body;
-    return <p>{truncated}</p>;
-  };
-
-  const handleAssigneeChange = (opt: string) => {
-    if (assignees.has(opt)) {
-      rmAssignee(opt);
-    } else {
-      addAssignee(opt);
-    }
+    return (
+      <>
+        {assignees.size > 0 && <strong>Preview:</strong>}
+        <p>{truncated}</p>
+      </>
+    );
   };
 
   const handleReplyChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -63,18 +61,18 @@ export default function SingleEmailThread({
   return (
     <div
       onClick={() => setShowDetails(!showDetails)}
-      onKeyDown={() => setShowDetails(!showDetails)}
-      className="m-2 p-2 bg-sky-100 border-solid border-2 border-sky-500 rounded"
+      onKeyUp={() => setShowDetails(!showDetails)}
+      className="m-2 p-2 bg-sky-100 border-solid border-2 border-sky-500 rounded shadow"
     >
       <div className="flex">
         <button type="button" onClick={() => setShowDetails(!showDetails)}>
           <strong>{sender}</strong>: {subject}
         </button>
         <input
-          className="ml-auto rounded-bl-lg rounded-tl-lg"
+          className="px-2 ml-auto rounded-bl-lg rounded-tl-lg"
           placeholder="Assign..."
           value={assignInput}
-          onKeyDown={(event) => event.stopPropagation()}
+          onKeyUp={(event) => event.stopPropagation()}
           onClick={(event) => event.stopPropagation()}
           onChange={(event) => setAssignInput(event.target.value)}
         />
@@ -90,7 +88,7 @@ export default function SingleEmailThread({
           Assign
         </button>
         <button
-          className="px-2 bg-sky-300 rounded-full"
+          className="mx-1 px-2 bg-sky-300 rounded-full"
           type="button"
           onClick={(event) => {
             event.stopPropagation();
@@ -101,6 +99,9 @@ export default function SingleEmailThread({
           Reply
         </button>
       </div>
+      {assignees.size > 0 && (
+        <Assigned assignees={[...assignees]} onClickRm={(a) => rmAssignee(a)} />
+      )}
       {showReplyBox && showDetails && (
         <ReplyBox
           toWhom={sender}
@@ -119,34 +120,13 @@ export default function SingleEmailThread({
       )}
       <div className="text-left">
         {showDetails ? (
-          <>
-            {assignees.size > 0 && (
-              <>
-                <strong>Assigned:</strong>
-                {[...assignees].map((a) => (
-                  <div key={a} className="flex bg-slate-200">
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        rmAssignee(a);
-                      }}
-                    >
-                      X
-                    </button>
-                    <p className="p-2">{a}</p>
-                  </div>
-                ))}
-              </>
-            )}
-            <ul>
-              {sortedEmails.map((m) => (
-                <li key={m.timestamp.getTime()}>
-                  <EmailDisplay {...m} />
-                </li>
-              ))}
-            </ul>
-          </>
+          <ul>
+            {sortedEmails.map((m) => (
+              <li key={m.timestamp.getTime()}>
+                <EmailDisplay {...m} />
+              </li>
+            ))}
+          </ul>
         ) : (
           preview()
         )}

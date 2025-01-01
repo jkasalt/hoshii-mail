@@ -27,7 +27,7 @@ export default function ReplyBox({
 
   return (
     <div className="m-2 mx-12 bg-slate-800 text-slate-50 rounded-lg flex flex-col shadow-2xl">
-      <div className="flex max-w">
+      <div className="flex max-w items-center">
         <p>Replying to {toWhom}</p>
         <button
           className="ml-auto m-1 p-1 bg-red-600"
@@ -49,6 +49,7 @@ export default function ReplyBox({
         onChange={onChange}
       />
       <button
+        className="p-2 flex-none"
         type="button"
         onClick={(event) => {
           event.stopPropagation();

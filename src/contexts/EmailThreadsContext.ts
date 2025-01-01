@@ -4,4 +4,4 @@ import type { EmailThreadAction } from "../reducers/EmailThreadReducer";
 
 export const EmailThreadsContext = createContext<EmailThread[] | null>(null);
 export const EmailThreadsDispatchContext =
-        createContext<Dispatch<EmailThreadAction> | null>(null);
+  createContext<Dispatch<EmailThreadAction> | null>(null);
